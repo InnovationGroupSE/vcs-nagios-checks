@@ -7,10 +7,6 @@
 #
 # Author: Andreas Skarmutsos Lindh <andreas@innovationgroup.se>
 #
-# Requirements:
-#   Linux:
-#       Ethtool
-#
 
 RC=0
 
@@ -19,7 +15,6 @@ DLADMBIN=$(which dladm)
 GREPBIN=$(which grep)
 AWKBIN=$(which awk)
 SEDBIN=$(which sed)
-ETHTOOLBIN=$(which ethtool)
 
 # Check platform/OS/distro and CPU architecture, prepare for
 # anomalities in uname binary between OS'
@@ -53,7 +48,12 @@ get_link_status () {
             echo `$SUDOBIN $DLADMBIN show-dev $1 -p|$AWKBIN '{print $2}'|$AWKBIN -F'=' '{print $2}'`
             ;;
         Linux)
-            echo `$SUDOBIN $ETHTOOLBIN $1|$AWKBIN '/Link detected/ {print $3}'|$SEDBIN 's/yes/UP/;s/no/DOWN/;'`
+            DEVFILE=/sys/class/net/$1/carrier
+            if test -f $DEVFILE; then
+                echo `cat $DEVFILE|$SEDBIN 's/1/UP/;s/0/DOWN/;'`
+            else
+                echo "NO_DEVICE"
+            fi
     esac
 }
 

@@ -16,6 +16,11 @@ GREPBIN=$(which grep)
 AWKBIN=$(which awk)
 SEDBIN=$(which sed)
 
+PROGNAME=`basename $0`
+PROGPATH=`echo $0 | sed -e 's,[\\/][^\\/][^\\/]*$,,'`
+
+. $PROGPATH/utils.sh
+
 # Check platform/OS/distro and CPU architecture, prepare for
 # anomalities in uname binary between OS'
 OS_PLATFORM=$(uname -s)
@@ -33,11 +38,6 @@ case "$OS_PLATFORM" in
         PLATFORM_ARCH=$(uname -p)
         ;;
 esac
-
-# Check if we do have OP5 utils
-if [ -f /opt/op5/plugins/utils.sh ] ; then
-    . /opt/op5/plugins/utils.sh
-fi
 
 HBDEVS=`$GREPBIN ^link /etc/llttab|$AWKBIN '{print $3}'|$SEDBIN 's/://;s_/dev/__'`
 
@@ -61,8 +61,14 @@ STATUSLINE=""
 for dev in $HBDEVS; do
     DEVSTATUS=`get_link_status $dev|tr '[a-z]' '[A-Z]'`
     STATUSLINE="${STATUSLINE} ${dev}:${DEVSTATUS}"
-    if [ "$DEVSTATUS" != "UP" ]; then
+    if [ "$DEVSTATUS" = "UP" ]; then
+        RC=$STATE_OK
+    elif [ "$DEVSTATUS" = "DOWN" ]; then
         RC=$STATE_CRITICAL
+    elif [ "$DEVSTATUS" = "NO_DEVICE" ]; then
+        RC=$STATE_UNKNOWN
+    else
+        RC=$STATE_UNKNOWN
     fi
 done
 

@@ -5,7 +5,7 @@
 # Check Veritas Cluster Server HeartBeat link status.
 # Currently only tested on Solaris 10 x86 with OP5
 #
-# Author: Andreas Lindh <andreas@innovationgroup.se>
+# Author: Andreas Skarmutsos Lindh <andreas@innovationgroup.se>
 #
 # Requirements:
 #   Linux:

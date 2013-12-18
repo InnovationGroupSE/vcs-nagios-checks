@@ -53,7 +53,7 @@ get_link_status () {
             echo `$SUDOBIN $DLADMBIN show-dev $1 -p|$AWKBIN '{print $2}'|$AWKBIN -F'=' '{print $2}'`
             ;;
         Linux)
-            echo `$SUDOBIN $ETHTOOLBIN $1|$AWKBIN '/Link detected/ {print $3}'|$SEDBIN 's/yes/UP/;s/no/DOWN;'`
+            echo `$SUDOBIN $ETHTOOLBIN $1|$AWKBIN '/Link detected/ {print $3}'|$SEDBIN 's/yes/UP/;s/no/DOWN/;'`
     esac
 }
 

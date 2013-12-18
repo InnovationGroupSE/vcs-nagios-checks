@@ -3,7 +3,6 @@
 # check_vcs_heartbeatlinks.sh
 #
 # Check Veritas Cluster Server HeartBeat link status.
-# Currently only tested on Solaris 10 x86 with OP5
 #
 # Author: Andreas Skarmutsos Lindh <andreas@innovationgroup.se>
 #
@@ -61,11 +60,11 @@ STATUSLINE=""
 for dev in $HBDEVS; do
     DEVSTATUS=`get_link_status $dev|tr '[a-z]' '[A-Z]'`
     STATUSLINE="${STATUSLINE} ${dev}:${DEVSTATUS}"
-    if [ "$DEVSTATUS" = "UP" ]; then
+    if [ "$DEVSTATUS" -eq "UP" ]; then
         RC=$STATE_OK
-    elif [ "$DEVSTATUS" = "DOWN" ]; then
+    elif [ "$DEVSTATUS" -eq "DOWN" ]; then
         RC=$STATE_CRITICAL
-    elif [ "$DEVSTATUS" = "NO_DEVICE" ]; then
+    elif [ "$DEVSTATUS" -eq "NO_DEVICE" ]; then
         RC=$STATE_UNKNOWN
     else
         RC=$STATE_UNKNOWN

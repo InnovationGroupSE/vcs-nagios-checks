@@ -4,7 +4,7 @@
 #
 # Check Veritas Cluster Server HeartBeat link status.
 #
-# Author: Andreas Skarmutsos Lindh <andreas@innovationgroup.se>
+# Author: Andreas Skarmutsos Lindh <andreas@superblock.se>
 #
 
 RC=0
